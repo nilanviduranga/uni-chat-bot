@@ -9,3 +9,12 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('home');
 });
+
+
+//Auth Routes
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+Route::get('/verify', function () {
+    return view('auth.verify');
+})->name('verify');
