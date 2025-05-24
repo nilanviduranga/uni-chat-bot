@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Bus\Batch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,9 +20,16 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'full_name',
+        'name_with_initials',
         'email',
-        'password',
+        'mobile',
+        'dob',
+        'address',
+        'city',
+        'country',
+        'batch_id',
+        'degree_programme_id',
     ];
 
     /**
@@ -44,5 +53,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    public function degreeProgramme()
+    {
+        return $this->belongsTo(degreeProgramme::class, 'degree_programme_id');
+    }
+
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class, 'batch_id');
     }
 }
