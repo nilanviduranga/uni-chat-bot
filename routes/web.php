@@ -1,20 +1,18 @@
 <?php
 
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\OtpLoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/home', function () {
-    return view('home');
-});
 
 
 //Auth Routes
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-Route::get('/verify', function () {
-    return view('auth.verify');
-})->name('verify');
+Route::get('/login', [OtpLoginController::class, 'showEmailForm'])->name('login');
+Route::post('/login-request', [OtpLoginController::class, 'requestOtp'])->name('login-request');
+Route::post('/verify-otp', [OtpLoginController::class, 'verifyOtp'])->name('verify-otp');
+Route::post('/logout', [OtpLoginController::class, 'logout'])->name('logout');
+
+
+// Chat Routes
+Route::middleware(['auth'])->get('/', [ChatController::class, 'index'])->name('home');
+

@@ -5,13 +5,14 @@
     <div class="text-sm font-semibold mt-2">Nipun Hansaka</div>
     <div class="text-xs text-gray-500">UOC - Student</div>
     <div class="flex flex-row items-center mt-3">
-        {{-- <div class="flex flex-col justify-center h-4 w-8 bg-indigo-500 rounded-full">
-            <div class="h-3 w-3 bg-white rounded-full self-end mr-1"></div>
-        </div>
-        <div class="leading-none ml-1 text-xs">Active</div> --}}
-        <button class="text-xs bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded">
-            Logout
-        </button>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="text-xs bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded">
+                Logout
+            </button>
+        </form>
+
     </div>
 </div>
 
