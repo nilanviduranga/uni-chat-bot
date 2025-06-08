@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReciveMessage;
+use App\Events\SendMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,24 +14,29 @@ class ChatController extends Controller
         $response['userId'] = Auth::id();
         return view('chat')->with($response);
     }
+
     public function sendMessage(Request $request)
     {
 
-        // Logic to handle sending a message
-        // This is just a placeholder; actual implementation will depend on your chat system
-        $message = $request->input('message');
+        $message = $request->message;
+// dd($message);
         $userId = Auth::id();
-        dd($message, $userId);
 
-        // Here you would typically save the message to the database or send it to a service
+        $data = [
+            'user_id' => $userId,
+            'content' => $message,
+            'isBot' => false,
+        ];
+        event(new SendMessage($data));
 
         return response()->json(['status' => 'success', 'message' => 'Message sent successfully!']);
     }
 
-    // public function reciveMessage(Request $request)
-    // {
-    //     // dd($request->all());
-    //     event(new MyEvent('hello world'));
-    //     // return 'Event broadcasted!';
-    // }
+    public function reciveMessage(Request $request)
+    {
+        // dd($request->all());
+        event(new ReciveMessage($request->all()));
+
+        // return 'Event broadcasted!';
+    }
 }
