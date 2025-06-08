@@ -8,6 +8,7 @@ class degreeProgramme extends Model
 {
     protected $fillable = [
         'name',
+        'description',
         'duration',
         'department_id',
     ];
