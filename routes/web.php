@@ -15,4 +15,5 @@ Route::post('/logout', [OtpLoginController::class, 'logout'])->name('logout');
 
 // Chat Routes
 Route::middleware(['auth'])->get('/', [ChatController::class, 'index'])->name('home');
+Route::middleware(['auth'])->post('/message/send', [ChatController::class, 'sendMessage'])->name('home');
 
