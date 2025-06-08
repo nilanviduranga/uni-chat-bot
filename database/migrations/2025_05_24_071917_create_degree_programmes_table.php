@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('degree_programmes', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->text('description')->nullable();
             $table->integer('duration')->nullable(); // Duration in years
             $table->integer('department_id')->nullable();
             $table->timestamps();
