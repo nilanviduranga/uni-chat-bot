@@ -10,7 +10,7 @@
     </div>
     <div class="flex-grow ml-4">
         <div class="relative w-full">
-            <input type="text"
+            <input type="text" id="message-input" placeholder=""
                 class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
             <button
                 class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="ml-4">
-        <button
+        <button onclick="sendMessage()"
             class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
             <span>Send</span>
             <span class="ml-2">
