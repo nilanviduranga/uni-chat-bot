@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusSchedule;
+use App\Models\CafeteriaMenu;
 use App\Models\courseModule;
+use App\Models\CourseModuleSchedule;
 use App\Models\degreeProgramme;
 use App\Models\department;
 use App\Models\Event;
@@ -88,6 +91,53 @@ class FetchCommonDataController extends Controller
         } else {
             $studentBatches = studentBatch::all();
             return response()->json($studentBatches);
+        }
+    }
+
+    //fetch all course module schedule data
+    public function fetchCourseModuleScheduleData($id)
+    {
+        if ($id) {
+            $courseModuleSchedule = CourseModuleSchedule::find($id);
+            if ($courseModuleSchedule) {
+                return response()->json($courseModuleSchedule);
+            } else {
+                return response()->json(['error' => 'Course Module Schedule not found'], 404);
+            }
+        } else {
+            $courseModuleSchedules = CourseModuleSchedule::all();
+            return response()->json($courseModuleSchedules);
+        }
+    }
+    //fetch bus route data
+    public function fetchBusRouteData($id)
+    {
+        if ($id) {
+            $busRoute = BusSchedule::find($id);
+            if ($busRoute) {
+                return response()->json($busRoute);
+            } else {
+                return response()->json(['error' => 'Bus Route not found'], 404);
+            }
+        } else {
+            $busRoutes = BusSchedule::all();
+            return response()->json($busRoutes);
+        }
+    }
+
+    //fetch cafeteria menu data
+    public function fetchCafeteriaMenuData($id)
+    {
+        if ($id) {
+            $cafeteriaMenu = CafeteriaMenu::find($id);
+            if ($cafeteriaMenu) {
+                return response()->json($cafeteriaMenu);
+            } else {
+                return response()->json(['error' => 'Cafeteria Menu not found'], 404);
+            }
+        } else {
+            $cafeteriaMenus = CafeteriaMenu::all();
+            return response()->json($cafeteriaMenus);
         }
     }
 }

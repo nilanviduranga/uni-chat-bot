@@ -24,9 +24,14 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             DepartmentSeeder::class,
             DegreeProgrammeSeeder::class,
-            EventSeeder::class
-
-]);
-
+            SemesterSeeder::class,
+            CourseModuleSeeder::class,
+            StudentBatchSeeder::class,
+            ExamResultSeeder::class,
+            EventSeeder::class,
+            CafeteriaMenuSeeder::class,
+            BusScheduleSeeder::class,
+            CourseModuleScheduleSeeder::class
+        ]);
     }
 }

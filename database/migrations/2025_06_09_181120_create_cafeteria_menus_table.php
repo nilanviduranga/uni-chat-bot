@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exam_results', function (Blueprint $table) {
+        Schema::create('cafeteria_menus', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('module_id');
-            $table->string('facing_year');
-            $table->string('grade');
+            $table->string('meal_type');
+            $table->string('menu_item');
+            $table->text('description')->nullable();
+            $table->decimal('price', 8, 2);
+            $table->string('status')->default('available');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exam_results');
+        Schema::dropIfExists('cafeteria_menus');
     }
 };

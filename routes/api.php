@@ -5,6 +5,7 @@ use App\Http\Controllers\FetchCommonDataController;
 use App\Http\Controllers\FetchUserDataController;
 use App\Http\Controllers\ReminderController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -15,8 +16,8 @@ Route::post('message/recive', [ChatController::class, 'reciveMessage']);
 
 
 // Route to fetch user data
-Route::post('user/fetch', [FetchUserDataController::class, 'fetchUserData']);
-Route::post('user/exam-result', [FetchUserDataController::class, 'fetchUserExamResult']);
+Route::post('/user/fetch', [FetchUserDataController::class, 'fetchUserData']);
+Route::post('/user/exam-result', [FetchUserDataController::class, 'fetchUserExamResult']);
 
 //user reminders
 Route::post('user/reminders', [ReminderController::class, 'fetchUserReminders']);
@@ -30,4 +31,6 @@ Route::get('/event/data/{id?}', [FetchCommonDataController::class, 'fetchEventDa
 Route::get('/degree-programme/data/{id?}', [FetchCommonDataController::class, 'fetchDegreeProgrammeData']);
 Route::get('/course-module/data/{id?}', [FetchCommonDataController::class, 'fetchCourseModuleData']);
 Route::get('/student-batch/data/{id?}', [FetchCommonDataController::class, 'fetchStudentBatchData']);
-
+Route::get('/course-module-schedule/data/{id?}', [FetchCommonDataController::class, 'fetchCourseModuleScheduleData']);
+Route::get('/bus/route/{id?}', [FetchCommonDataController::class, 'fetchBusRouteData']);
+Route::get('/cafeteria/menu/{id?}', [FetchCommonDataController::class, 'fetchCafeteriaMenuData']);
