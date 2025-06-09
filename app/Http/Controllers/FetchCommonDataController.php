@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\courseModule;
 use App\Models\degreeProgramme;
 use App\Models\department;
 use App\Models\Event;
+use App\Models\studentBatch;
 use Illuminate\Http\Request;
 
 class FetchCommonDataController extends Controller
@@ -57,4 +59,35 @@ class FetchCommonDataController extends Controller
         }
     }
 
+    //fetch all course module data
+    public function fetchCourseModuleData($id)
+    {
+        if ($id) {
+            $courseModule = courseModule::find($id);
+            if ($courseModule) {
+                return response()->json($courseModule);
+            } else {
+                return response()->json(['error' => 'Course Module not found'], 404);
+            }
+        } else {
+            $courseModules = CourseModule::all();
+            return response()->json($courseModules);
+        }
+    }
+
+    //fetch all student batch data
+    public function fetchStudentBatchData($id)
+    {
+        if ($id) {
+            $studentBatch = studentBatch::find($id);
+            if ($studentBatch) {
+                return response()->json($studentBatch);
+            } else {
+                return response()->json(['error' => 'Student Batch not found'], 404);
+            }
+        } else {
+            $studentBatches = studentBatch::all();
+            return response()->json($studentBatches);
+        }
+    }
 }

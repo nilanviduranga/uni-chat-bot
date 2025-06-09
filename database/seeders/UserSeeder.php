@@ -24,6 +24,20 @@ class UserSeeder extends Seeder
                 'address' => '123 Main Street',
                 'city' => 'Colombo',
                 'country' => 'Sri Lanka',
+                'batch_id' => 1,
+                'degree_programme_id' => 1,
+            ],
+            [
+                'full_name' => 'Miyuru Sanjana',
+                'name_with_initials' => 'M. Sanjana',
+                'email' => 'elbows.marine.0k@icloud.com',
+                'mobile' => '1234567890',
+                'dob' => '1990-01-01',
+                'address' => '123 Main Street',
+                'city' => 'Colombo',
+                'country' => 'Sri Lanka',
+                'batch_id' => 1,
+                'degree_programme_id' => 1,
             ]
 
         ]);
