@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('exam_results', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('module_id');
+            $table->string('module_id');
             $table->string('facing_year');
             $table->string('grade');
             $table->timestamps();

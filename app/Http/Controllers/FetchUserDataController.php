@@ -23,7 +23,9 @@ class FetchUserDataController extends Controller
         $request->validate([
             'user_id' => 'required',
         ]);
-        $examResults = ExamResult::where('user_id', $request->user_id)->get();
+        $examResults = ExamResult::where('user_id', $request->user_id)
+            ->with('courseModule')
+            ->get();
         return response()->json($examResults);
     }
 }
