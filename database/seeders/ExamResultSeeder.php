@@ -16,25 +16,25 @@ class ExamResultSeeder extends Seeder
         DB::table('exam_results')->insert([
             [
                 'user_id' => 1, // Nilan Viduranga
-                'module_id' => 1, // Assuming IC101 has id = 1
+                'module_id' => 'IC101', // Assuming IC101 has id = 1
                 'facing_year' => '2024',
                 'grade' => 'A',
             ],
             [
                 'user_id' => 1,
-                'module_id' => 2, // IC102
+                'module_id' => 'IC102', // IC102
                 'facing_year' => '2024',
                 'grade' => 'A-',
             ],
             [
                 'user_id' => 2, // Miyuru Sanjana
-                'module_id' => 1,
+                'module_id' => 'IC101',
                 'facing_year' => '2024',
                 'grade' => 'B+',
             ],
             [
                 'user_id' => 2,
-                'module_id' => 2,
+                'module_id' => 'IC102',
                 'facing_year' => '2024',
                 'grade' => 'B',
             ],

@@ -17,7 +17,7 @@ class EventSeeder extends Seeder
            [
                 'name' => 'Annual Tech Conference',
                 'description' => 'A conference to discuss the latest trends in technology.',
-                'date' => '2023-10-15',
+                'date' => '2025-10-15',
                 'start_time' => '09:00:00',
                 'end_time' => '17:00:00',
                 'location' => 'Colosium',
@@ -25,7 +25,7 @@ class EventSeeder extends Seeder
             [
                 'name' => 'Sustainability Workshop',
                 'description' => 'A workshop focused on sustainable practices in technology.',
-                'date' => '2023-11-20',
+                'date' => '2025-11-20',
                 'start_time' => '10:00:00',
                 'end_time' => '15:00:00',
                 'location' => 'Main Auditorium, University',
