@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'bot_api' => [
+        'base_url' => env('BOT_API_BASE_URL'),
+    ],
+
+
 ];
