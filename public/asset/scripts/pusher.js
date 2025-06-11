@@ -21,7 +21,7 @@ channel.bind('my-event', function (receivedData) {
             `
                         <div class="flex justify-end mb-1">
                             <div class="max-w-2xl bg-nexora border text-white rounded-lg px-4 py-3">
-                                <p class="text-sm leading-relaxed">${data.content}</p>
+                                <p class="text-sm leading-relaxed">${data.message}</p>
                             </div>
                         </div>
 `;
@@ -41,7 +41,7 @@ channel.bind('my-event', function (receivedData) {
                             </div>
                             <div class="flex-1 max-w-2xl">
                                 <div class="bg-gray-50 border rounded-lg px-4 py-3">
-                                    ${data.content}
+                                    ${data.message}
                                 </div>
                             </div>
                         </div>

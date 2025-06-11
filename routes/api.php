@@ -25,9 +25,9 @@ Route::prefix('mobile-api')->group(function () {
             $request->user()->tokens()->delete();
             return response()->json(['message' => 'Successfully logged out']);
         });
-
-        Route::post('/message/send', [ChatController::class, 'sendMessage']);
     }); //end group:sanctum-auth
+
+    Route::post('/message/send', [ChatController::class, 'sendMessage']);
 
     Route::post('/login/request', [OtpLoginController::class, 'requestOtp']);
     Route::post('/verify-otp', [OtpLoginController::class, 'verifyOtp']);
