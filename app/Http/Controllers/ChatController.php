@@ -12,14 +12,16 @@ class ChatController extends Controller
     public function index()
     {
         $response['userId'] = Auth::id();
-        return view('chat')->with($response);
+        $response['userName'] = Auth::user()->name_with_initials;
+        $response['userEmail'] = Auth::user()->email;
+        return view('pages.chat')->with($response);
     }
 
     public function sendMessage(Request $request)
     {
 
         $message = $request->message;
-// dd($message);
+        // dd($message);
         $userId = Auth::id();
 
         $data = [
