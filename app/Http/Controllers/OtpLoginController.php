@@ -22,7 +22,11 @@ class OtpLoginController extends Controller
 
         //check this email user avilabe
         if (!User::where('email', $request->email)->exists()) {
-            return back()->withErrors(['email' => 'This email is not registered.']);
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'This email is not registered.'], 404);
+            } else {
+                return back()->withErrors(['email' => 'This email is not registered.']);
+            }
         }
 
         // Check if an OTP has already been sent to this email within the last 5 minutes
@@ -45,6 +49,9 @@ class OtpLoginController extends Controller
             $message->to($request->email)->subject('Your Login OTP');
         });
 
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'OTP sent successfully.'], 200);
+        }
         return view('auth.verify')->with('email', $request->email);
     }
 
@@ -62,18 +69,35 @@ class OtpLoginController extends Controller
             ->first();
 
         if (!$record) {
-            return back()->withErrors(['code' => 'Invalid or expired OTP']);
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'Invalid or expired OTP'], 422);
+            } else {
+                return back()->withErrors(['code' => 'Invalid or expired OTP']);
+            }
+        } else {
+            $record->delete();
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                if ($request->expectsJson()) {
+                    return response()->json(['error' => 'No user found for this email.'], 404);
+                } else {
+                    return back()->withErrors(['email' => 'No user found for this email.']);
+                }
+            }
+
+            if ($request->expectsJson()) {
+                $token = $user->createToken('mobile-login')->plainTextToken;
+                return response()->json([
+                    'message' => 'Login successful',
+                    'token' => $token,
+                    'user' => $user
+                ]);
+            } else {
+                Auth::login($user);
+                return redirect()->route('home');
+            }
         }
-
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user) {
-            return back()->withErrors(['email' => 'No user found for this email.']);
-        }
-        Auth::login($user);
-        $record->delete();
-
-        return redirect()->route('home');
     }
 
     public function logout(Request $request)

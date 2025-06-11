@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\FetchCommonDataController;
 use App\Http\Controllers\FetchUserDataController;
+use App\Http\Controllers\OtpLoginController;
 use App\Http\Controllers\ReminderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
@@ -11,6 +12,35 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+
+//Auth Routes
+
+
+Route::prefix('mobile-api')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+
+        Route::post('/logout', function (Request $request) {
+            $request->user()->tokens()->delete();
+            return response()->json(['message' => 'Successfully logged out']);
+        });
+
+        Route::post('/message/send', [ChatController::class, 'sendMessage']);
+    }); //end group:sanctum-auth
+
+    Route::post('/login/request', [OtpLoginController::class, 'requestOtp']);
+    Route::post('/verify-otp', [OtpLoginController::class, 'verifyOtp']);
+}); // end prefix:mobile-api
+
+
+
+
+
+
+
+
+
 
 Route::post('message/recive', [ChatController::class, 'reciveMessage']);
 
