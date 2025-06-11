@@ -19,18 +19,14 @@ class ChatController extends Controller
 
     public function sendMessage(Request $request)
     {
-
         $message = $request->message;
-        // dd($message);
         $userId = Auth::id();
-
         $data = [
             'user_id' => $userId,
             'content' => $message,
             'isBot' => false,
         ];
         event(new SendMessage($data));
-
         return response()->json(['status' => 'success', 'message' => 'Message sent successfully!']);
     }
 
