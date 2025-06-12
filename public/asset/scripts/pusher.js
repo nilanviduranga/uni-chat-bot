@@ -11,8 +11,11 @@ console.log(userId);
 var channel = pusher.subscribe(`my-channel.${userId}`);
 channel.bind('my-event', function (receivedData) {
     data = receivedData.data;
+    console.log(data);
     let isBot = Boolean(data.isBot);
+    const markdownHTML = marked.parse(data.message); // convert markdown to HTML
     localStorage.setItem('chatSessionId', data.sessionId);
+    loadChatHistory()
 
 
     if (!isBot) {
@@ -22,7 +25,7 @@ channel.bind('my-event', function (receivedData) {
             `
                         <div class="flex justify-end mb-1">
                             <div class="max-w-2xl bg-nexora border text-white rounded-lg px-4 py-3">
-                                <p class="text-sm leading-relaxed">${data.message}</p>
+                                <p class="text-sm leading-relaxed">${markdownHTML}</p>
                             </div>
                         </div>
 `;
@@ -42,7 +45,7 @@ channel.bind('my-event', function (receivedData) {
                             </div>
                             <div class="flex-1 max-w-2xl">
                                 <div class="bg-gray-50 border rounded-lg px-4 py-3">
-                                    ${data.message}
+                                    ${markdownHTML}
                                 </div>
                             </div>
                         </div>

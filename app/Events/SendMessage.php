@@ -18,12 +18,13 @@ class SendMessage implements ShouldBroadcast
 
     public function __construct($data)
     {
+        // dd($data);
         $this->data = $data;
     }
 
     public function broadcastOn()
     {
-        return ['my-channel.1'];
+        return ["my-channel.{$this->data['user_id']}"];
     }
     public function broadcastAs()
     {
