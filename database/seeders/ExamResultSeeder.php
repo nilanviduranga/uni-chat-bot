@@ -30,13 +30,25 @@ class ExamResultSeeder extends Seeder
                 'user_id' => 2, // Miyuru Sanjana
                 'module_id' => 'IC101',
                 'facing_year' => '2024',
-                'grade' => 'B+',
+                'grade' => 'A+',
             ],
             [
                 'user_id' => 2,
                 'module_id' => 'IC102',
                 'facing_year' => '2024',
                 'grade' => 'B',
+            ],
+            [
+                'user_id' => 3, // test user
+                'module_id' => 'IC101',
+                'facing_year' => '2024',
+                'grade' => 'B+',
+            ],
+            [
+                'user_id' => 3,
+                'module_id' => 'IC102',
+                'facing_year' => '2024',
+                'grade' => 'A',
             ],
         ]);
     }

@@ -57,12 +57,14 @@
                                 Support (Soon)</a>
                             <div class="border-t border-gray-100 mt-1 pt-1">
 
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
                                     @csrf
-                                    <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                                        Log out
-                                    </button>
                                 </form>
+                                <a href="#" type="button" onclick="logOutUser()"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                    Log out
+                                </a>
+
 
                             </div>
                         </div>
@@ -160,9 +162,9 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="font-medium text-gray-900 mb-1">Writing & Editing</h3>
-                                        <p class="text-sm text-gray-500">Help with emails, essays, creative writing,
-                                            and more</p>
+                                        <h3 class="font-medium text-gray-900 mb-1">Administrative Help</h3>
+                                        <p class="text-sm text-gray-500">Get guidance on transcripts, leave applications,
+                                            and procedures.</p>
                                     </div>
                                 </div>
                             </button>
@@ -179,8 +181,9 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="font-medium text-gray-900 mb-1">Analysis & Research</h3>
-                                        <p class="text-sm text-gray-500">Data analysis, research, and insights</p>
+                                        <h3 class="font-medium text-gray-900 mb-1">Schedules & Timetables</h3>
+                                        <p class="text-sm text-gray-500">Check your classes, exams, and bus routes in
+                                            real-time.</p>
                                     </div>
                                 </div>
                             </button>
@@ -197,9 +200,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="font-medium text-gray-900 mb-1">Programming</h3>
-                                        <p class="text-sm text-gray-500">Code review, debugging, and development help
-                                        </p>
+                                        <h3 class="font-medium text-gray-900 mb-1">Dining & Cafeteria</h3>
+                                        <p class="text-sm text-gray-500">See today’s cafeteria menu and opening hours.</p>
                                     </div>
                                 </div>
                             </button>
@@ -216,8 +218,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="font-medium text-gray-900 mb-1">Learning & Education</h3>
-                                        <p class="text-sm text-gray-500">Explanations, tutorials, and study help</p>
+                                        <h3 class="font-medium text-gray-900 mb-1">Campus Events</h3>
+                                        <p class="text-sm text-gray-500">Explore upcoming events and get reminders.</p>
                                     </div>
                                 </div>
                             </button>
@@ -359,6 +361,7 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="{{ asset('asset/scripts/pusher.js') }}"></script>

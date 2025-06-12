@@ -73,14 +73,15 @@ function setChatActive(id) {
         .then(data => {
             console.log("Chat history:", data)
             data.forEach(chat => {
-                console.log(chat)
+                const markdownHTML = marked.parse(chat.content); // convert markdown to HTML
+
                 if (chat.role == 'user') {
                     //User Message
                     chatBox.innerHTML +=
                         `
                         <div class="flex justify-end mb-1">
                             <div class="max-w-2xl bg-nexora border text-white rounded-lg px-4 py-3">
-                                <p class="text-sm leading-relaxed">${chat.content}</p>
+                                <p class="text-sm leading-relaxed">${markdownHTML}</p>
                             </div>
                         </div>
 `;
@@ -99,7 +100,7 @@ function setChatActive(id) {
                             </div>
                             <div class="flex-1 max-w-2xl">
                                 <div class="bg-gray-50 border rounded-lg px-4 py-3">
-                                    ${chat.content}
+                                    ${markdownHTML}
                                 </div>
                             </div>
                         </div>
@@ -159,6 +160,29 @@ function deleteChat(session_id) {
         }
     });
 }
+
+function logOutUser() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will log you out of your account.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, log me out'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            try {
+                // Submit the logout form
+                document.getElementById('logout-form').submit();
+            } catch (error) {
+                console.error('Logout error:', error);
+                Swal.fire('Error', 'Something went wrong while logging out.', 'error');
+            }
+        }
+    });
+}
+
 
 
 

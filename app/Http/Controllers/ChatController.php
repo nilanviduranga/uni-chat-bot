@@ -58,7 +58,7 @@ class ChatController extends Controller
             $session = ChatSession::create([
                 'user_id'    => $user->id,
                 'session_id' => $sessionId,
-                'title' => substr($message, 0, 10)
+                'title' => substr($message, 0, 20)
             ]);
         }
 
@@ -75,12 +75,15 @@ class ChatController extends Controller
             'session_id' => (string) $sessionId,
         ];
 
+        //dd($payload);
+
         $responseMessage = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
             'Authorization' => 'Bearer poc-key-123'
         ])->post($baseUrl . '/api/v1/chat', $payload);
 
+        $session->touch();
 
         // $this->setResponse($responseMessage->json(), $sessionId->json());
         $this->setResponse($responseMessage->json(), $sessionId);

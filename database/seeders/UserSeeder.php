@@ -38,7 +38,20 @@ class UserSeeder extends Seeder
                 'country' => 'Sri Lanka',
                 'batch_id' => 1,
                 'degree_programme_id' => 1,
-            ]
+            ],
+            [
+                'full_name' => 'Test User',
+                'name_with_initials' => 'Test User',
+                'email' => 'testuser@nexora.com',
+                'mobile' => '1234567890',
+                'dob' => '1990-01-01',
+                'address' => '123 Main Street',
+                'city' => 'Colombo',
+                'country' => 'Sri Lanka',
+                'batch_id' => 1,
+                'degree_programme_id' => 1,
+            ],
+
 
         ]);
     }
