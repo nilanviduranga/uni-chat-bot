@@ -61,12 +61,6 @@ This Laravel backend module and web chat application power the Nexora Campus Cop
 - Future support for role-based access control (RBAC).
 
 ---
-
-## 📱 Screenshots
-
-<div align="center">
-    
-...
 ## 🚀 Future Enhancements
 
 - Expanded admin/teacher-level access controls.
