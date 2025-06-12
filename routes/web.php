@@ -18,7 +18,10 @@ Route::middleware(['auth'])->get('/', [ChatController::class, 'index'])->name('h
 Route::middleware(['auth'])->post('/message/send', [ChatController::class, 'sendMessage'])->name('message.send');
 
 
-Route::middleware(['auth'])->get('/chat/history', [ChatController::class, 'chatHistory'])->name('message.send');
-Route::middleware(['auth'])->get('/chat/history/get/{id?}', [ChatController::class, 'chatHistoryget'])->name('message.send');
+Route::middleware(['auth'])->get('/chat/history', [ChatController::class, 'chatHistory']);
+Route::middleware(['auth'])->get('/chat/history/get/{id?}', [ChatController::class, 'chatHistoryget']);
+
+Route::middleware(['auth'])->delete('/chat/delete/{id?}', [ChatController::class, 'chatDelete']);
+
 
 

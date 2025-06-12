@@ -360,6 +360,7 @@
         });
     </script>
     <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="{{ asset('asset/scripts/pusher.js') }}"></script>
     <script type="text/javascript" src="{{ asset('asset/scripts/chat-history.js') }}"></script>
 @endpush

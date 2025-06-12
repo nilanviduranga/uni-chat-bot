@@ -112,6 +112,20 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'pgsql_rds' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_PGSQL_RDS_HOST'),
+            'port' => env('DB_PGSQL_RDS_PORT', '5432'),
+            'database' => env('DB_PGSQL_RDS_DATABASE'),
+            'username' => env('DB_PGSQL_RDS_USERNAME'),
+            'password' => env('DB_PGSQL_RDS_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+
     ],
 
     /*
@@ -147,7 +161,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 

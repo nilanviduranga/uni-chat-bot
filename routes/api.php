@@ -29,6 +29,7 @@ Route::prefix('mobile-api')->group(function () {
 
         Route::get('/chat/history', [ChatController::class, 'chatHistory']);
         Route::get('/chat/history/get/{id?}', [ChatController::class, 'chatHistoryget']);
+        Route::delete('/chat/delete/{id?}', [ChatController::class, 'chatDelete']);
     }); //end group:sanctum-auth
 
 
@@ -36,15 +37,7 @@ Route::prefix('mobile-api')->group(function () {
     Route::post('/verify-otp', [OtpLoginController::class, 'verifyOtp']);
 }); // end prefix:mobile-api
 
-
-
-
-
-
-
-
-
-
+//test
 Route::post('message/recive', [ChatController::class, 'reciveMessage']);
 
 
