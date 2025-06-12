@@ -11,7 +11,7 @@
 @endpush
 
 @section('content')
-    <div class="flex h-screen">
+    <div class="flex min-h-screen">
         <!-- Sidebar -->
         <div class="hidden md:flex md:w-64 lg:w-72 xl:w-80 bg-gray-50 border-r border-gray-200 flex-col">
             <!-- Header -->
@@ -26,7 +26,7 @@
             </div>
 
             <!-- Conversations -->
-            <div class="flex-1 overflow-y-auto p-2">
+            <div class="flex-1 overflow-y-auto p-2 max-h-[80vh]">
                 <div class="space-y-1" id="chat-history-section">
                     {{-- chat history load to heare --}}
                 </div>
@@ -102,16 +102,14 @@
                 <!-- Mobile Conversations -->
                 <div class="flex-1 overflow-y-auto p-2">
                     <div class="space-y-1">
-                        @for ($i = 1; $i <= 12; $i++)
                             <div
                                 class="group flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white cursor-pointer transition-colors">
                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                 </svg>
-                                <span class="text-sm text-gray-700 truncate">Chat {{ $i }}</span>
+                                <span class="text-sm text-gray-700 truncate"></span>
                             </div>
-                        @endfor
                     </div>
                 </div>
             </div>
@@ -132,18 +130,50 @@
                 </div>
 
                 <div class="md:hidden">
-                    <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                    </button>
+
+                    <!-- User Section -->
+                    <div class="p-4 border-t border-gray-200">
+                        <div class="flex items-center gap-3">
+
+
+                            <div class="relative">
+                                <div id="user-menu-mobile">
+                                    <div class="w-8 h-8 bg-nexora rounded-full flex items-center justify-center">
+                                        <span class="text-xs font-medium text-white">U</span>
+                                    </div>
+                                </div>
+                                <div id="user-dropdown-mobile"
+                                    class="absolute top-full right-0 mb-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 hidden">
+                                    <a href="#"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Settings
+                                        (Soon)</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Help
+                                        &
+                                        Support (Soon)</a>
+                                    <div class="border-t border-gray-100 mt-1 pt-1">
+
+                                        <form id="logout-form" method="POST" action="{{ route('logout') }}"
+                                            style="display: none;">
+                                            @csrf
+                                        </form>
+                                        <a href="#" type="button" onclick="logOutUser()"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                            Log out
+                                        </a>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Chat Area -->
             <div class="flex-1 flex flex-col">
                 <!-- Welcome State -->
-                <div id="welcome-screen" class="flex-1 flex flex-col items-center justify-center px-4 py-8">
+                <div id="welcome-screen" class="flex-1 flex flex-col items-center justify-center px-4 py-8 max-h-[80vh]">
                     <div class="text-center max-w-2xl mx-auto">
                         <h1 class="text-4xl font-semibold text-gray-900 mb-4">How can I help you today?</h1>
                         <p class="text-lg text-gray-500 mb-8">I'm Nexora, your AI assistant. I can help with writing,
@@ -228,7 +258,7 @@
                 </div>
 
                 <!-- Chat Messages -->
-                <div id="chat-area" class="flex-1 overflow-y-auto hidden">
+                <div id="chat-area" class="flex-1 overflow-y-auto hidden max-h-[80vh]">
                     <div class="max-w-3xl mx-auto px-4 py-6 space-y-6">
                         <div id="chat-box">
                             <!-- Messages will be dynamically added here -->
@@ -292,6 +322,19 @@
 
         document.addEventListener('click', () => {
             userDropdown?.classList.add('hidden');
+        });
+
+        // User menu dropdown mobile
+        const userMenuMobile = document.getElementById('user-menu-mobile');
+        const userDropdownMobile = document.getElementById('user-dropdown-mobile');
+
+        userMenuMobile?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdownMobile.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', () => {
+            userDropdownMobile?.classList.add('hidden');
         });
 
         // Chat input handling
