@@ -12,11 +12,12 @@ var channel = pusher.subscribe(`my-channel.${userId}`);
 channel.bind('my-event', function (receivedData) {
     data = receivedData.data;
     let isBot = Boolean(data.isBot);
-    console.log(isBot);
+    localStorage.setItem('chatSessionId', data.sessionId);
+
 
     if (!isBot) {
         //User Message
-        console.log('Bot message received');
+        console.log('User Message Sending Successfull!');
         document.getElementById('chat-box').innerHTML +=
             `
                         <div class="flex justify-end mb-1">
@@ -26,8 +27,8 @@ channel.bind('my-event', function (receivedData) {
                         </div>
 `;
     } else {
-//Assistant Message
-        console.log('Bot message received');
+        //Assistant Message
+        console.log('Bot message received!');
         document.getElementById('chat-box').innerHTML +=
             `
                         <div class="flex items-start gap-3 mb-3">
@@ -56,22 +57,60 @@ channel.bind('my-event', function (receivedData) {
 
 
 //send user data to server
-function sendMessage() {
-    const message = document.getElementById('chat-input').value;
-    if (message.trim() === '') {
-        return;
-    } else {
-        console.log(message);
+// function sendMessage() {
+//     const message = document.getElementById('chat-input').value;
+//     const sessionId = (localStorage.getItem('chatSessionId'));
 
-        //send message to server
-        fetch('/message/send', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ message })
+//     if (message.trim() === '') {
+//         return;
+//     } else {
+//         console.log(message);
+
+//         //send message to server
+//         fetch('/message/send', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+//             },
+//             body: JSON.stringify({ message, sessionId })
+//         });
+//     }
+// }
+
+function sendMessage() {
+    const message = document.getElementById('chat-input').value.trim();
+    const sessionId = localStorage.getItem('chatSessionId');
+
+    document.getElementById('chat-input').value = ''; // clear input
+
+    welcomeScreen?.classList.add('hidden');
+    chatArea?.classList.remove('hidden');
+
+    if (!message) return;
+
+    console.log(message);
+
+    fetch('/message/send', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ message, sessionId })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Message send failed');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Server Response:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
-    }
 }
+
 

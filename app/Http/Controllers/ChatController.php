@@ -31,12 +31,6 @@ class ChatController extends Controller
             abort(400, 'User not found or message missing');
         }
 
-        event(new SendMessage([
-            'user_id' => $user->id,
-            'message' => $message,
-            'isBot'   => false,
-        ]));
-
         $session = null;
 
         if ($sessionId) {
@@ -62,20 +56,22 @@ class ChatController extends Controller
             $session = ChatSession::create([
                 'user_id'    => $user->id,
                 'session_id' => $sessionId,
+                'title' => substr($message, 0, 10)
             ]);
         }
+
+        event(new SendMessage([
+            'user_id' => $user->id,
+            'message' => $message,
+            'isBot'   => false,
+            "session" => $session
+        ]));
 
         $payload = [
             'message'    => $message,
             'user_id'    => (string) $user->id,
             'session_id' => (string) $sessionId,
         ];
-
-        // $response = Http::withToken('Bearer poc-key-123')
-        //     ->acceptJson()
-        //     ->post("{$baseUrl}/api/v1/chat", $payload);
-
-
 
         $responseMessage = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -84,11 +80,37 @@ class ChatController extends Controller
         ])->post($baseUrl . '/api/v1/chat', $payload);
 
 
-        $this->setResponse($responseMessage->json());
+        // $this->setResponse($responseMessage->json(), $sessionId->json());
+        $this->setResponse($responseMessage->json(), $sessionId);
+
 
         return response()->json(['status' => 'ok']);
     }
 
+
+    public function chatHistory()
+    {
+        $userId = Auth::id();
+        $userChats = chatSession::where('user_id', $userId)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return response()->json($userChats);
+    }
+
+    public function chatHistoryget($id)
+    {
+        $sessionId = (string) $id;
+        $baseUrl   = config('services.bot_api.base_url');
+
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer poc-key-123'
+        ])->get("{$baseUrl}/api/v1/conversations/{$sessionId}/history");
+
+        return response()->json($response->json());
+    }
 
 
 
@@ -96,13 +118,14 @@ class ChatController extends Controller
     {
         event(new ReciveMessage($request->all()));
     }
-    public function setResponse($responseData)
+    public function setResponse($responseData, $sessionId)
     {
         $userId = Auth::id();
         $data = [
             'user_id' => $userId,
             'message' => $responseData['response'] ?? '',
             'isBot' => true,
+            'sessionId' => $sessionId,
         ];
         event(new ReciveMessage($data));
     }
