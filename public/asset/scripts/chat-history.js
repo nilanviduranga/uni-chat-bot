@@ -22,20 +22,28 @@ function loadChatHistory() {
                 }
 
                 chatSection.innerHTML += `
-                    <a href="#" onclick="setChatActive(${chat.session_id})">
-                        <div id="history${chat.session_id}"
-                            class="group flex items-center gap-3 px-3 py-2 rounded-lg ${styleClass} cursor-pointer transition-colors ">
-                            <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-600" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                            </svg>
-                            <span class="text-sm text-gray-700 truncate flex-1">
-                                ${chat.title ?? 'Untitled Chat'}
-                            </span>
-                        </div>
-                    </a>
-                `;
+    <div class="flex items-center justify-between group px-3 py-2 rounded-lg ${styleClass} hover:bg-white transition-colors" id="history${chat.session_id}">
+        <a href="#" onclick="setChatActive(${chat.session_id})" class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-600" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span class="text-sm text-gray-700 truncate flex-1">
+                ${chat.title ?? 'Untitled Chat'}
+            </span>
+        </a>
+        <button onclick="deleteChat(${chat.session_id})" class="text-gray-500 group-hover:text-red-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4" />
+            </svg>
+        </button>
+    </div>
+`;
+
+
             });
         })
         .catch(error => {
@@ -107,7 +115,56 @@ function setChatActive(id) {
 
 }
 
+function deleteChat(session_id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will delete the chat permanently!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/chat/delete/${session_id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to delete chat");
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        const chatElement = document.getElementById(`history${session_id}`);
+                        if (chatElement) chatElement.remove();
+
+                        if (localStorage.getItem('chatSessionId') == session_id) {
+                            localStorage.removeItem('chatSessionId');
+                            location.reload();
+                        }
+                        loadChatHistory();
+
+                        Swal.fire('Deleted!', 'The chat has been deleted.', 'success');
+                    } else {
+                        Swal.fire('Oops!', 'Something went wrong.', 'error');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('Error!', error.message, 'error');
+                });
+        }
+    });
+}
+
+
+
 window.onload = function () {
     localStorage.removeItem('chatSessionId');
     loadChatHistory();
 };
+
+

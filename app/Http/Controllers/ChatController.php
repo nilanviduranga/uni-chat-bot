@@ -8,7 +8,9 @@ use App\Models\chatSession;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
@@ -112,12 +114,11 @@ class ChatController extends Controller
         return response()->json($response->json());
     }
 
-
-
     public function reciveMessage(Request $request)
     {
         event(new ReciveMessage($request->all()));
     }
+
     public function setResponse($responseData, $sessionId)
     {
         $userId = Auth::id();
@@ -128,5 +129,46 @@ class ChatController extends Controller
             'sessionId' => $sessionId,
         ];
         event(new ReciveMessage($data));
+    }
+
+    public function chatDelete($sessionId)
+    {
+        $session = chatSession::where('session_id', $sessionId)->first();
+        $userId = Auth::id();
+
+        if ($session && $userId == $session->user_id) {
+            $session->delete();
+            $this->deleteFromRds($session->session_id);
+
+            return response()->json(['status' => 'success', 'message' => 'Chat deleted successfully']);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Unauthorized or chat not found'], 403);
+    }
+
+    function deleteFromRds($id)
+    {
+        try {
+            $session = DB::connection('pgsql_rds')
+                ->table('conversations')
+                ->where('session_id', $id)
+                ->first();
+
+            if (!$session) {
+                return;
+            }
+
+            DB::connection('pgsql_rds')
+                ->table('messages')
+                ->where('conversation_id', $session->id)
+                ->delete();
+
+            DB::connection('pgsql_rds')
+                ->table('conversations')
+                ->where('id', $session->id)
+                ->delete();
+        } catch (\Exception $e) {
+            Log::error("Failed to delete from RDS: " . $e->getMessage());
+        }
     }
 }
