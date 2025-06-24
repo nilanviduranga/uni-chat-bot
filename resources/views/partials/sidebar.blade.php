@@ -66,8 +66,8 @@
                         @click.away="userDropdown = false" style="display: none;">
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Settings
                             (Soon)</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Help
-                            & Support (Soon)</a>
+                        <a href="{{route('help')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Help
+                            & Support</a>
                         <div class="border-t border-gray-100 mt-1 pt-1">
                             <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
                                 @csrf

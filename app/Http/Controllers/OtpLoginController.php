@@ -54,13 +54,6 @@ class OtpLoginController extends Controller
             Mail::to($request->email)->send(new OtpMail($otp));
         }
 
-        // // Send OTP via email
-        // if ($request->email != "testuser@nexora.com") {
-        //     Mail::raw("Your login code is: $otp", function ($message) use ($request) {
-        //         $message->to($request->email)->subject('Your Login OTP');
-        //     });
-        // }
-
         if ($request->expectsJson()) {
             return response()->json(['message' => 'OTP sent successfully.'], 200);
         }

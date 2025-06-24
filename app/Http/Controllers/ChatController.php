@@ -21,6 +21,10 @@ class ChatController extends Controller
         $response['userEmail'] = Auth::user()->email;
         return view('pages.chat')->with($response);
     }
+    public function help()
+    {
+        return view('pages.help');
+    }
 
     public function sendMessage(Request $request)
     {
