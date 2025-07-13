@@ -8,6 +8,7 @@ class studentBatch extends Model
 {
     protected $fillable = [
         'batch_code',
+        'semester_id',
     ];
 
     function users()

@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('course_modules', function (Blueprint $table) {
-    $table->string('course_code')->primary(); // e.g., IC101
-    $table->string('name')->unique();
-    $table->integer('credits')->default(0);
-    $table->string('status')->default('active');
-    $table->unsignedBigInteger('semester_id')->nullable();
-    $table->unsignedBigInteger('degree_programme_id')->nullable();
-    $table->timestamps();
-});
-
+        Schema::create('course_modules', function (Blueprint $table) {
+            $table->string('course_code')->primary(); // e.g., IC101
+            $table->string('name')->unique();
+            $table->string('lecturer')->nullable();
+            $table->integer('credits')->default(0);
+            $table->string('status')->default('active');
+            $table->unsignedBigInteger('semester_id')->nullable();
+            $table->unsignedBigInteger('degree_programme_id')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

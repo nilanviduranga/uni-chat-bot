@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('course_module_schedules', function (Blueprint $table) {
             $table->id();
-            $table->integer('module_id');
-            $table->string('lecturer')->nullable();
+            $table->string('course_code');
             $table->date('class_date');
             $table->time('start_time');
             $table->time('end_time');

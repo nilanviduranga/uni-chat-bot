@@ -8,8 +8,7 @@ class CourseModuleSchedule extends Model
 {
 
     protected $fillable = [
-        'module_id',
-        'lecturer',
+        'course_code',
         'class_date',
         'start_time',
         'end_time',
@@ -18,6 +17,6 @@ class CourseModuleSchedule extends Model
 
     public function module()
     {
-        return $this->belongsTo(CourseModule::class, 'module_id');
+        return $this->belongsTo(CourseModule::class, 'course_code', 'course_code');
     }
 }

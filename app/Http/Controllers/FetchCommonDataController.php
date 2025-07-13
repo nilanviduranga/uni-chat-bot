@@ -9,7 +9,9 @@ use App\Models\CourseModuleSchedule;
 use App\Models\degreeProgramme;
 use App\Models\department;
 use App\Models\Event;
+use App\Models\semester;
 use App\Models\studentBatch;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class FetchCommonDataController extends Controller
@@ -110,40 +112,47 @@ class FetchCommonDataController extends Controller
         }
     }
 
-    // public function fetchLectureScheduleByStudent(Request $request)
-    // {
-    //     $request->validate([
-    //         'student_id' => 'required',
-    //         'date' => 'date_format:Y-m-d|nullable', // Optional date filter
-    //     ]);
+    public function fetchLectureScheduleByStudent(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required',
+            'date' => 'date_format:Y-m-d|nullable', // Optional date filter
+        ]);
+        $user = User::find($request->student_id);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        $studentBatch = studentBatch::where('id', $user->batch_id)->first();
+        if (!$studentBatch) {
+            return response()->json(['error' => 'Student Batch not found'], 404);
+        }
 
-    //     //get degree programme id
-    //     $degreeProgrammeId = studentBatch::whereHas('students', function ($query) use ($request) {
-    //         $query->where('id', $request->input('student_id'));
-    //     })->value('degree_programme_id');
+        // $degreeProgramme = degreeProgramme::where('id', $user->degree_programme_id)->first();
+        // if (!$degreeProgramme) {
+        //     return response()->json(['error' => 'Degree Programme not found'], 404);
+        // }
 
-    //     if (!$degreeProgrammeId) {
-    //         return response()->json(['error' => 'Degree Programme not found for the student'], 404);
-    //     }
+        $semester = semester::where('id', $studentBatch->semester_id)->first();
+        if (!$semester) {
+            return response()->json(['error' => 'Semester not found'], 404);
+        }
 
-    //     //get semester id
-    //     $semesterId = studentBatch::whereHas('students', function ($query) use ($request) {
-    //         $query->where('id', $request->input('student_id'));
-    //     })->value('semester_id');
+        $userCourseModules = courseModule::where('semester_id', $studentBatch->semester_id)
+            ->where('degree_programme_id', $user->degree_programme_id)
+            ->get();
 
-    //     $degreeProgramme = degreeProgramme::find($degreeProgrammeId);
+        if ($userCourseModules->isEmpty()) {
+            return response()->json(['error' => 'No course modules found for this user'], 404);
+        }
 
-    //     $studentId = $request->input('student_id');
+        $courseModuleSchedules = CourseModuleSchedule::whereIn('course_code', $userCourseModules->pluck('course_code'));
+        if ($request->date) {
+            $courseModuleSchedules->where('class_date', $request->date);
+        }
+        $courseModuleSchedules = $courseModuleSchedules->with('module')->get();
 
-    //     // Fetch lecture schedules for the student
-    //     $lectureSchedules = CourseModuleSchedule::whereHas('courseModule', function ($query) use ($studentId) {
-    //         $query->whereHas('students', function ($query) use ($studentId) {
-    //             $query->where('id', $studentId);
-    //         });
-    //     })->get();
-
-    //     return response()->json($lectureSchedules);
-    // }
+        return response()->json($courseModuleSchedules);
+    }
 
 
     //fetch bus route data
