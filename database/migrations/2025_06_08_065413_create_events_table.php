@@ -19,6 +19,7 @@ return new class extends Migration
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->string('location')->nullable();
+            $table->boolean('can_register')->default(false);
             $table->timestamps();
         });
     }
