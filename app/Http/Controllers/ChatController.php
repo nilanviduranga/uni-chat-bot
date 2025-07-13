@@ -53,7 +53,7 @@ class ChatController extends Controller
             $session = ChatSession::create([
                 'user_id'    => $user->id,
                 'session_id' => $sessionId,
-                'title' => substr($message, 0, 20)
+                'title' => mb_substr($message, 0, 20, 'UTF-8')
             ]);
         }
 

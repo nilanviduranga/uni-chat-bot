@@ -9,6 +9,7 @@ Route::get('/login', [OtpLoginController::class, 'showEmailForm'])->name('login'
 Route::post('/login-request', [OtpLoginController::class, 'requestOtp'])->name('login-request');
 Route::post('/verify-otp', [OtpLoginController::class, 'verifyOtp'])->name('verify-otp');
 Route::post('/logout', [OtpLoginController::class, 'logout'])->name('logout');
+Route::post('/resend-otp', [OtpLoginController::class, 'resendOtp'])->name('resend-otp');
 
 // Chat Routes
 Route::middleware(['auth'])->get('/', [ChatController::class, 'index'])->name('home');

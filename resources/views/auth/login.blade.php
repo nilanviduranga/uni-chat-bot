@@ -10,7 +10,7 @@
 
             <x-input label="Email Address" name="email" type="email" placeholder="you@example.com" required />
 
-            <x-button type="submit" variant="primary">
+            <x-button type="submit" variant="primary" onclick="buttonStatus()" id="submitButton">
                 Send OTP
             </x-button>
         </form>
@@ -18,4 +18,10 @@
 @endsection
 
 @push('scripts')
+    <script>
+        function buttonStatus() {
+            submitButton.innerText = 'OTP Sending...';
+            // submitButton.disabled = true;
+        }
+    </script>
 @endpush
