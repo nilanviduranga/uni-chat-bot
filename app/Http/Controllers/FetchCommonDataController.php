@@ -109,6 +109,43 @@ class FetchCommonDataController extends Controller
             return response()->json($courseModuleSchedules);
         }
     }
+
+    // public function fetchLectureScheduleByStudent(Request $request)
+    // {
+    //     $request->validate([
+    //         'student_id' => 'required',
+    //         'date' => 'date_format:Y-m-d|nullable', // Optional date filter
+    //     ]);
+
+    //     //get degree programme id
+    //     $degreeProgrammeId = studentBatch::whereHas('students', function ($query) use ($request) {
+    //         $query->where('id', $request->input('student_id'));
+    //     })->value('degree_programme_id');
+
+    //     if (!$degreeProgrammeId) {
+    //         return response()->json(['error' => 'Degree Programme not found for the student'], 404);
+    //     }
+
+    //     //get semester id
+    //     $semesterId = studentBatch::whereHas('students', function ($query) use ($request) {
+    //         $query->where('id', $request->input('student_id'));
+    //     })->value('semester_id');
+
+    //     $degreeProgramme = degreeProgramme::find($degreeProgrammeId);
+
+    //     $studentId = $request->input('student_id');
+
+    //     // Fetch lecture schedules for the student
+    //     $lectureSchedules = CourseModuleSchedule::whereHas('courseModule', function ($query) use ($studentId) {
+    //         $query->whereHas('students', function ($query) use ($studentId) {
+    //             $query->where('id', $studentId);
+    //         });
+    //     })->get();
+
+    //     return response()->json($lectureSchedules);
+    // }
+
+
     //fetch bus route data
     public function fetchBusRouteData($id)
     {

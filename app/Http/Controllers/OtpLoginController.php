@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendOtpMail;
 use App\Mail\OtpMail;
 use App\Models\OtpCode;
 use App\Models\User;
@@ -19,46 +20,70 @@ class OtpLoginController extends Controller
 
     public function requestOtp(Request $request)
     {
+        // Validate email input
         $request->validate(['email' => 'required|email']);
+        $email = $request->email;
 
-        //check this email user avilabe
-        if (!User::where('email', $request->email)->exists()) {
-            if ($request->expectsJson()) {
-                return response()->json(['error' => 'This email is not registered.'], 404);
-            } else {
-                return back()->withErrors(['email' => 'This email is not registered.']);
-            }
+        // Check if user exists
+        if (!User::where('email', $email)->exists()) {
+            $errorResponse = ['email' => 'This email is not registered.'];
+
+            return $request->expectsJson()
+                ? response()->json(['error' => $errorResponse['email']], 404)
+                : back()->withErrors($errorResponse);
         }
 
-        // Check if an OTP has already been sent to this email within the last 5 minutes
-        $recentOtps = OtpCode::where('email', $request->email)->get();
-        $recentOtps->each(function ($otp) {
-            $otp->delete();
-        });
+        // Clear any previous OTPs for this email
+        OtpCode::where('email', $email)->delete();
 
-        $otp = rand(100000, 999999);
+        // Generate OTP
+        $otp = $email === 'testuser@nexora.com' ? 123456 : rand(100000, 999999);
 
-        if ($request->email == "testuser@nexora.com") {
-            $otp = 123456;
-        }
-
-
+        // Store OTP
         OtpCode::create([
-            'email' => $request->email,
+            'email' => $email,
             'code' => $otp,
             'expires_at' => now()->addMinutes(5),
         ]);
 
-        // send OTP email
-        if ($request->email !== 'testuser@nexora.com') {
-            Mail::to($request->email)->send(new OtpMail($otp));
+        // dd('hello');
+        // Send OTP email (skip for test user)
+        if ($email !== 'testuser@nexora.com') {
+            dispatch(new SendOtpMail($email, $otp));
         }
 
-        if ($request->expectsJson()) {
-            return response()->json(['message' => 'OTP sent successfully.'], 200);
-        }
-        return view('auth.verify')->with('email', $request->email);
+        // Return appropriate response
+        return $request->expectsJson()
+            ? response()->json(['message' => 'OTP sent successfully.'], 200)
+            : view('auth.verify', ['email' => $email]);
     }
+
+    public function resendOtp(Request $request)
+    {
+        $email = $request->email;
+
+        // Check if OTP already exists
+        $record = OtpCode::where('email', $email)->first();
+
+        if ($record) {
+            // Prevent resending within 60 seconds
+            if (now()->diffInSeconds($record->created_at) < 60) {
+                return $request->expectsJson()
+                    ? response()->json(['error' => 'Please wait before requesting a new OTP.'], 429)
+                    : back()->withErrors(['error' => 'Please wait at least 60 seconds before requesting a new OTP.']);
+            }
+
+            // Delete the old record if we're allowing a resend
+            $record->delete();
+        }
+
+        // Reuse requestOtp() by creating a new Request
+        $newRequest = new Request(['email' => $email]);
+
+        return $this->requestOtp($newRequest);
+    }
+
+
 
     public function verifyOtp(Request $request)
     {
@@ -68,16 +93,15 @@ class OtpLoginController extends Controller
         ]);
 
         $record = OtpCode::where('email', $request->email)
-            ->where('code', $request->code)
-            ->where('expires_at', '>', now())
-            ->latest()
             ->first();
 
-        if (!$record) {
+        if (!$record || $record->code != $request->code) {
             if ($request->expectsJson()) {
                 return response()->json(['error' => 'Invalid or expired OTP'], 422);
             } else {
-                return back()->withErrors(['code' => 'Invalid or expired OTP']);
+                return view('auth.verify')
+                    ->with('email', $request->email)
+                    ->withErrors(['error' => 'Invalid or expired OTP']);
             }
         } else {
             $record->delete();

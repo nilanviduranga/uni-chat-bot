@@ -100,21 +100,29 @@ function setChatActive(id) {
                 } else {
                     //Assistant Message
                     chatBox.innerHTML += `
-                        <div class="flex items-start gap-3 mb-3 w-full overflow-x-auto">
-                            <div
-                                class="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <svg class="w-4 h-4 text-white" fill="white" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
-                            <div class="flex-1 max-w-2xl">
-                                <div class="bg-gray-50 border rounded-2xl px-4 py-3 leading-relaxed">
-                                    ${markdownHTML}
-                                </div>
-                            </div>
-                        </div>
+    <div class="flex items-start gap-3 mb-3 w-full overflow-x-auto">
+        <div class="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+            <svg class="w-4 h-4 text-white" fill="white" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        </div>
+        <div class="flex-1 max-w-2xl group relative">
+            <div class="bg-gray-50 border rounded-2xl px-4 py-3 leading-relaxed" id="chat-content-${Date.now()}">
+                ${markdownHTML}
+            </div>
+            <button onclick="copyChatContent(this)" title="Copy"
+                class="absolute top-2 right-2 hidden group-hover:inline-flex items-center justify-center rounded-md p-1 hover:bg-gray-200 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600 icon-default" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2M16 8h2a2 2 0 012 2v8a2 2 0 01-2 2h-8a2 2 0 01-2-2v-2" />
+                </svg>
+                <span class="hidden text-xs text-green-600 ml-1 icon-copied">Copied</span>
+            </button>
+        </div>
+    </div>
 `;
                 }
             });
@@ -123,6 +131,26 @@ function setChatActive(id) {
             console.error("Error loading chat history:", error);
         });
 }
+
+function copyChatContent(button) {
+    const content = button.parentElement.querySelector('.leading-relaxed').innerText;
+
+    navigator.clipboard.writeText(content).then(() => {
+        const icon = button.querySelector('.icon-default');
+        const copiedText = button.querySelector('.icon-copied');
+
+        icon.classList.add('hidden');
+        copiedText.classList.remove('hidden');
+
+        setTimeout(() => {
+            icon.classList.remove('hidden');
+            copiedText.classList.add('hidden');
+        }, 1200);
+    }).catch(err => {
+        alert("Failed to copy: " + err);
+    });
+}
+
 
 function deleteChat(session_id) {
     Swal.fire({

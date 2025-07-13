@@ -58,5 +58,7 @@ Route::get('/degree-programme/data/{id?}', [FetchCommonDataController::class, 'f
 Route::get('/course-module/data/{id?}', [FetchCommonDataController::class, 'fetchCourseModuleData']);
 Route::get('/student-batch/data/{id?}', [FetchCommonDataController::class, 'fetchStudentBatchData']);
 Route::get('/course-module-schedule/data/{id?}', [FetchCommonDataController::class, 'fetchCourseModuleScheduleData']);
+// Route::post('/student-lecture-schedule/data', [FetchCommonDataController::class, 'fetchLectureScheduleByStudent']);
+
 Route::get('/bus/route/{id?}', [FetchCommonDataController::class, 'fetchBusRouteData']);
 Route::get('/cafeteria/menu/{id?}', [FetchCommonDataController::class, 'fetchCafeteriaMenuData']);

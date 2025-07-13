@@ -31,9 +31,9 @@
         <input type="hidden" name="{{ $name }}" id="otp-value-{{ $name }}">
     </div>
 
-    @error($name)
-        <p class="text-sm text-red-500">{{ $message }}</p>
-    @enderror
+    @if (session('error'))
+        <p class="text-sm text-red-500">{{ session('error') }}</p>
+    @endif
 </div>
 
 <script>

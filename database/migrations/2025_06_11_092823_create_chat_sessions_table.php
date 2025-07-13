@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('session_id');
-            $table->string('title');
+            $table->string('title', 255)
+                ->charset('utf8mb4')
+                ->collation('utf8mb4_unicode_ci');
             $table->timestamps();
         });
     }
