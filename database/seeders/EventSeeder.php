@@ -21,6 +21,7 @@ class EventSeeder extends Seeder
                 'start_time' => '09:00:00',
                 'end_time' => '17:00:00',
                 'location' => 'Colosium',
+                'can_register' => true,
             ],
             [
                 'name' => 'Sustainability Workshop',
@@ -29,6 +30,7 @@ class EventSeeder extends Seeder
                 'start_time' => '10:00:00',
                 'end_time' => '15:00:00',
                 'location' => 'Main Auditorium, University',
+                'can_register' => false,
             ],
             [
                 'name' => 'AI & Machine Learning Bootcamp',
@@ -37,6 +39,7 @@ class EventSeeder extends Seeder
                 'start_time' => '08:30:00',
                 'end_time' => '16:30:00',
                 'location' => 'Computer Lab 3, Tech Building',
+                'can_register' => false,
             ],
             [
                 'name' => 'Startup Pitch Night',
@@ -45,6 +48,7 @@ class EventSeeder extends Seeder
                 'start_time' => '18:00:00',
                 'end_time' => '21:00:00',
                 'location' => 'Innovation Hub, UOC',
+                'can_register' => false,
             ],
             [
                 'name' => 'Cybersecurity Awareness Day',
@@ -53,6 +57,7 @@ class EventSeeder extends Seeder
                 'start_time' => '09:00:00',
                 'end_time' => '13:00:00',
                 'location' => 'Main Hall, UOC',
+                'can_register' => false,
             ],
             [
                 'name' => 'Hackathon 24 Hours',
@@ -61,6 +66,7 @@ class EventSeeder extends Seeder
                 'start_time' => '10:00:00',
                 'end_time' => '10:00:00',
                 'location' => 'Tech Innovation Lab',
+                'can_register' => false,
             ],
             [
                 'name' => 'Mobile App Dev Meetup',
@@ -69,6 +75,7 @@ class EventSeeder extends Seeder
                 'start_time' => '14:00:00',
                 'end_time' => '17:00:00',
                 'location' => 'Lecture Hall B2',
+                'can_register' => false,
             ],
             [
                 'name' => 'Internship and Career Fair',
@@ -77,6 +84,7 @@ class EventSeeder extends Seeder
                 'start_time' => '09:00:00',
                 'end_time' => '16:00:00',
                 'location' => 'University Grounds',
+                'can_register' => false,
             ],
             [
                 'name' => 'Research Symposium 2025',
@@ -85,6 +93,7 @@ class EventSeeder extends Seeder
                 'start_time' => '08:00:00',
                 'end_time' => '13:00:00',
                 'location' => 'Conference Room A',
+                'can_register' => false,
             ],
             [
                 'name' => 'Open Source Contribution Day',
@@ -93,6 +102,7 @@ class EventSeeder extends Seeder
                 'start_time' => '10:00:00',
                 'end_time' => '17:00:00',
                 'location' => 'Lab 5, Tech Block',
+                'can_register' => false,
             ],
         ]);
     }

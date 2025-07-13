@@ -13,7 +13,7 @@ class Event extends Model
         'start_time',
         'end_time',
         'location',
-        'department_id',
+        'can_register',
     ];
 
 }
