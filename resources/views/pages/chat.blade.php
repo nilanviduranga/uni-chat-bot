@@ -145,10 +145,10 @@
                             rows="1"></textarea>
 
                         <!-- Attachment Button inside textarea -->
-                        <label for="file-upload"
+                        <!-- <label for="file-upload"
                             class="absolute right-2 bottom-2 text-violet-600 hover:text-violet-800 p-2 rounded-full hover:bg-violet-50 transition cursor-pointer">
                             <i class="fa-solid fa-paperclip"></i>
-                        </label>
+                        </label> -->
                         <input id="file-upload" type="file" class="hidden" />
                     </div>
 
