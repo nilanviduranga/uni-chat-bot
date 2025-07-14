@@ -37,7 +37,7 @@ class OtpLoginController extends Controller
         OtpCode::where('email', $email)->delete();
 
         // Generate OTP
-        $otp = $email === 'testuser@nexora.com' ? 123456 : rand(100000, 999999);
+        $otp = $email === 'test-user@nexora.com' ? 123456 : rand(100000, 999999);
 
         // Store OTP
         OtpCode::create([
